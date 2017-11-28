@@ -1,7 +1,11 @@
 // Node server
 const express = require('express');
 const path = require('path');
+
 const parser = require('./parse_commands');
+const coffeeController = require('./coffee_controller');
+const lightController = require('./light_controller');
+const googleSearcher = require('./google_searcher');
 
 const app = express();
 const port = 3000;
@@ -10,20 +14,25 @@ const port = 3000;
 app.get('/', (request, response) => {
   response.send('Hello There');
 });
+app.post('/command', (request, response) => {
 
-app.get('/command', (request, response) => {
-
-   // parse() expects a file path to audio: 
-   // file type: .flac, bit resoultion: 16 bit, 
+   // parse() expects a file path to audio:
+   // file type: .flac, bit resoultion: 16 bit,
    // sampling rate: 16000 hertz, audio channel: mono
    // as an example: "resources/makeMeCoffee.flac"
-   const getParse = parser.parse(request.body); 
-   getParse.then(function(result){
+
+   const getParse = parser.parse(request.body);
+   // TODO: Generator function here?
+   getParse.then(function* (result){
+      // Transcript of voice command
       const command = result.action;
-      switch (command) {
+      // Find first word and assume it is the command
+      const firstWord = command.substr(0, command.indexOf(' '));
+
+      switch (firstWord) {
          case 'coffee':
          {
-            return getCoffee((res, er) => {
+            return coffeeController.getCoffee((res, er) => {
                if (er) {
                   console.log("Error while getting coffee", er);
                }
@@ -36,7 +45,7 @@ app.get('/command', (request, response) => {
          }
          case 'lights':
          {
-            return switchLights((res, er) => {
+            return lightController.switchLights((res, er) => {
                if (er) {
                   console.log("Error while changing lights", er);
                }
@@ -49,15 +58,17 @@ app.get('/command', (request, response) => {
          }
          case 'search':
          {
-            return gSearch((res, er) => {
-               if (er) {
-                  console.log("Error while google searching", er);
-               }
-               else {
-                  console.log("Searching", res);
-                  response.send("Searching!");
-               }
-            });
+            // Grab remainder of command
+            const query = command.substr(command.indexOf(' ')+1);
+
+            const res = yield googleSearcher.gSearch(query);
+            if (res.failed) {
+               console.log("Error while google searching");
+            }
+            else {
+               console.log("Search results: ", res);
+               response.send("Searching!");
+            }
             break;
          }
          default:
