@@ -16,11 +16,6 @@ app.get('/', (request, response) => {
 });
 app.post('/command', (request, response) => {
 
-   // parse() expects a file path to audio:
-   // file type: .flac, bit resoultion: 16 bit,
-   // sampling rate: 16000 hertz, audio channel: mono
-   // as an example: "resources/makeMeCoffee.flac"
-
    const getParse = parser.parse(request.body);
    // TODO: Generator function here?
    getParse.then(function* (result){

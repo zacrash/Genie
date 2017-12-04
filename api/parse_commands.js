@@ -28,9 +28,7 @@ exports.parse = function (audioFile) {
 	// Creates a client
 	const client = new speech.SpeechClient({ });
 
-	// const fileName = 'resources/makeMeCoffee.flac';
-	// const fileName = 'resources/searchWeather.flac';
-	// const fileName = 'resources/turnOnLights.flac';
+	// const fileName = 'resources/search_nb.3gp';
 	const fileName = audioFile;
 
 	// Reads a local audio file and converts it to base64
@@ -38,16 +36,17 @@ exports.parse = function (audioFile) {
 	const audioBytes = file.toString('base64');
 
 	// The audio file's encoding, sample rate in hertz, and BCP-47 language code
-	// file type: .flac
-	// bir resoultion: 16 bit
-	// sampling rate: 16000 hertz
-	// audio channel: mono
 	const audio = {
 	  content: audioBytes,
 	};
+	// const config = {
+	//   encoding: 'FLAC',
+	//   sampleRateHertz: 16000,
+	//   languageCode: 'en-US',
+	// };
 	const config = {
-	  encoding: 'FLAC',
-	  sampleRateHertz: 16000,
+	  encoding: 'AMR',
+	  sampleRateHertz: 8000,
 	  languageCode: 'en-US',
 	};
 	const request = {
