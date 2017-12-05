@@ -1,22 +1,30 @@
 // Node server
 const express = require('express');
 const path = require('path');
+var bodyParser = require('body-parser')
 
 const parser = require('./parse_commands');
 const coffeeController = require('./coffee_controller');
 const lightController = require('./light_controller');
 const googleSearcher = require('./google_searcher');
 
+
 const app = express();
 const port = process.env.PORT || 3001;
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 // Routes
 app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
 app.post('/command', (request, response) => {
-   console.log("response body:", response.body);
-   const getParse = parser.parse(request.body);
+   const getParse = parser.parse(request.body.command);
+   console.log("getParse:", getParse);
 
    getParse.then(function (result){
       // Transcript of voice command
@@ -61,15 +69,17 @@ app.post('/command', (request, response) => {
             // Grab remainder of command
             const query = command.substr(command.indexOf(' ')+1);
 
-            const res = googleSearcher.gSearch(query);
-            console.log(res);
-            if (res == 'failed') {
-               console.log("Error while google searching");
-            }
-            else {
-               console.log("Search results: ", res);
-               response.send("Searching!");
-            }
+            const res = googleSearcher.googleSearch(query);
+            res.then((result) => {
+               console.log("res:", result);
+               if (res.failed) {
+                  console.log("Error while google searching");
+               }
+               else {
+                  console.log("Search results: ", result);
+                  response.send(result);
+               }
+            });
             break;
          }
          default:

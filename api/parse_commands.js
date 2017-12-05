@@ -23,7 +23,7 @@ exports.parse = function (audioData) {
 	const projectId = 'rugged-sunbeam-185822';
 
 	// set environment variable
-	//process.env['GOOGLE_APPLICATION_CREDENTIALS'] = "private/googleSpeechCredentials.json";
+	process.env['GOOGLE_APPLICATION_CREDENTIALS'] = "private/googleSpeechCredentials.json";
 
 	// Creates a client
 	const client = new speech.SpeechClient({ });
@@ -34,18 +34,15 @@ exports.parse = function (audioData) {
 	// Reads a local audio file and converts it to base64
 	// const file = fs.readFileSync(fileName);
 
-	// const audioBytes = audio.toString('base64');
-	const audioBytes = audioData;
+	const bytes = audioData.toString();
 
+   // Delete newline characters
+   audioBytes = bytes.replace(/\n/g, '');
+   
 	// The audio file's encoding, sample rate in hertz, and BCP-47 language code
 	const audio = {
 	  content: audioBytes,
 	};
-	// const config = {
-	//   encoding: 'FLAC',
-	//   sampleRateHertz: 16000,
-	//   languageCode: 'en-US',
-	// };
 	const config = {
 	  encoding: 'AMR',
 	  sampleRateHertz: 8000,
