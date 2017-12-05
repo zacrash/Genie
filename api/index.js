@@ -23,8 +23,8 @@ app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
 app.get('/command', (request, response) => {
-   // const getParse = parser.parse(request.body.command);
-   // console.log("getParse:", getParse);
+   const getParse = parser.parse(request.body.command);
+   console.log("getParse:", getParse);
 
    // getParse.then(function (result){
       // Transcript of voice command
@@ -57,16 +57,13 @@ app.get('/command', (request, response) => {
             const query = command.substr(command.indexOf(' ')+1);
 
             const res = googleSearcher.googleSearch(query);
-            res.then((result) => {
-               console.log("res:", result);
-               if (res.failed) {
-                  console.log("Error while google searching");
-               }
-               else {
-                  console.log("Search results: ", result);
-                  response.send(result);
-               }
-            });
+            res.then(function(result) {
+               console.log("FROM index: ", result);
+               response.send(result.toString());
+            }).catch(err => {
+               console.log("ERROR: ", err);
+            })
+
             break;
          }
          default:
