@@ -14,19 +14,20 @@ const port = process.env.PORT || 3001;
 app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
-app.post('/command', (request, response) => {
+app.get('/command', (request, response) => {
 
    const getParse = parser.parse(request.body);
 
    getParse.then(function (result){
       // Transcript of voice command
-      const command = result.command;
+      const command = result.text;
+      //const command = "search what is a virtual assistant";
 
       // Find first word and assume it is the command
       const firstWord = command.substr(0, command.indexOf(' '));
 
       switch (firstWord) {
-         case 'coffee':
+         case 'Coffee':
          {
             // return coffeeController.getCoffee((res, er) => {
             //    if (er) {
@@ -41,7 +42,7 @@ app.post('/command', (request, response) => {
             console.log("Received Coffee");
             break;
          }
-         case 'lights':
+         case 'Lights':
          {
             return lightController.switchLights((res, er) => {
                if (er) {
@@ -54,13 +55,14 @@ app.post('/command', (request, response) => {
             });
             break;
          }
-         case 'search':
+         case 'Search':
          {
             // Grab remainder of command
             const query = command.substr(command.indexOf(' ')+1);
 
             const res = googleSearcher.gSearch(query);
-            if (res.failed) {
+            console.log(res);
+            if (res == 'failed') {
                console.log("Error while google searching");
             }
             else {
@@ -76,7 +78,6 @@ app.post('/command', (request, response) => {
    }).catch(err => {
       console.log("ERROR: ", err);
    })
-   response.send("Done");
 });
 
 app.listen(port, (err) => {
