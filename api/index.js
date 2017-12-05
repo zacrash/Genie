@@ -21,6 +21,7 @@ app.get('/command', (request, response) => {
    getParse.then(function (result){
       // Transcript of voice command
       const command = result.text;
+      console.log("Command:", command);
       //const command = "search what is a virtual assistant";
 
       // Find first word and assume it is the command
