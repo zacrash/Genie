@@ -12,30 +12,33 @@ const port = process.env.PORT || 3001;
 
 // Routes
 app.get('/', (request, response) => {
-  response.send('Hello There');
+  response.send('Welcome to Genie');
 });
 app.post('/command', (request, response) => {
 
    const getParse = parser.parse(request.body);
    // TODO: Generator function here?
-   getParse.then(function* (result){
+   getParse.then(function (result){
       // Transcript of voice command
-      const command = result.action;
+      const command = result.command;
+
       // Find first word and assume it is the command
       const firstWord = command.substr(0, command.indexOf(' '));
 
       switch (firstWord) {
          case 'coffee':
          {
-            return coffeeController.getCoffee((res, er) => {
-               if (er) {
-                  console.log("Error while getting coffee", er);
-               }
-               else {
-                  console.log("Got Coffee", res);
-                  response.send("Got Coffee!");
-               }
-            });
+            // return coffeeController.getCoffee((res, er) => {
+            //    if (er) {
+            //       console.log("Error while getting coffee", er);
+            //    }
+            //    else {
+            //       console.log("Got Coffee", res);
+            //       response.send("Got Coffee!");
+            //    }
+            // });
+            // break;
+            console.log("Received Coffee");
             break;
          }
          case 'lights':
@@ -56,7 +59,7 @@ app.post('/command', (request, response) => {
             // Grab remainder of command
             const query = command.substr(command.indexOf(' ')+1);
 
-            const res = yield googleSearcher.gSearch(query);
+            const res = googleSearcher.gSearch(query);
             if (res.failed) {
                console.log("Error while google searching");
             }
