@@ -14,7 +14,7 @@ const port = process.env.PORT || 3001;
 app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
-app.get('/command', (request, response) => {
+app.post('/command', (request, response) => {
    console.log("response body:", response.body);
    const getParse = parser.parse(request.body);
 
