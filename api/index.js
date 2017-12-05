@@ -22,46 +22,33 @@ app.use(bodyParser.json())
 app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
-app.post('/command', (request, response) => {
-   const getParse = parser.parse(request.body.command);
-   console.log("getParse:", getParse);
+app.get('/command', (request, response) => {
+   // const getParse = parser.parse(request.body.command);
+   // console.log("getParse:", getParse);
 
-   getParse.then(function (result){
+   // getParse.then(function (result){
       // Transcript of voice command
-      const command = result.text;
-      console.log("Command:", command);
-      //const command = "search what is a virtual assistant";
-
+      //const command = result.text;
+      //console.log("Command:", command);
+      const command = "Coffee please";
       // Find first word and assume it is the command
       const firstWord = command.substr(0, command.indexOf(' '));
 
       switch (firstWord) {
          case 'Coffee':
          {
-            // return coffeeController.getCoffee((res, er) => {
-            //    if (er) {
-            //       console.log("Error while getting coffee", er);
-            //    }
-            //    else {
-            //       console.log("Got Coffee", res);
-            //       response.send("Got Coffee!");
-            //    }
-            // });
-            // break;
-            console.log("Received Coffee");
+            // Start coffee maker
+            coffeeController.getCoffee(1);
+
+            // Wait 2 seconds and turn off
+            // setInterval(() => {
+            //    coffeeController.getCoffee(0)
+            // }, 2000);
+
             break;
          }
          case 'Lights':
          {
-            return lightController.switchLights((res, er) => {
-               if (er) {
-                  console.log("Error while changing lights", er);
-               }
-               else {
-                  console.log("Flipped lights", res);
-                  response.send("Flipped lights!");
-               }
-            });
             break;
          }
          case 'Search':
@@ -86,9 +73,9 @@ app.post('/command', (request, response) => {
             console.log("Unidentified command:", command);
             response.send("Could not understand command", command);
       }
-   }).catch(err => {
-      console.log("ERROR: ", err);
-   })
+   // }).catch(err => {
+   //    console.log("ERROR: ", err);
+   // })
 });
 
 app.listen(port, (err) => {
