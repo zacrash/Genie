@@ -15,7 +15,7 @@ app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
 app.get('/command', (request, response) => {
-
+   console.log("response body:", response.body);
    const getParse = parser.parse(request.body);
 
    getParse.then(function (result){
