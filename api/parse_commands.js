@@ -23,7 +23,7 @@ exports.parse = function (audioFile) {
 	const projectId = 'rugged-sunbeam-185822';
 
 	// set environment variable
-	process.env['GOOGLE_APPLICATION_CREDENTIALS'] = "private/googleSpeechCredentials.json";
+	//process.env['GOOGLE_APPLICATION_CREDENTIALS'] = "private/googleSpeechCredentials.json";
 
 	// Creates a client
 	const client = new speech.SpeechClient({ });
@@ -54,7 +54,7 @@ exports.parse = function (audioFile) {
 	  config: config,
 	};
 	let getParse = function (request) {
-		return new Promise( function (resolve, reject) { 
+		return new Promise( function (resolve, reject) {
 		client
 		  .recognize(request)
 		  .then(data => {

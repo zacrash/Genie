@@ -14,17 +14,18 @@ const port = process.env.PORT || 3001;
 app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
-app.post('/command', (request, response) => {
+app.get('/command', (request, response) => {
 
-   const getParse = parser.parse(request.body);
-   // TODO: Generator function here?
-   getParse.then(function (result){
+   //const getParse = parser.parse(request.body);
+
+   //getParse.then(function (result){
       // Transcript of voice command
-      const command = result.command;
+      //const command = result.command;
+      const command = "coffee ";
 
       // Find first word and assume it is the command
       const firstWord = command.substr(0, command.indexOf(' '));
-
+      console.log(firstWord);
       switch (firstWord) {
          case 'coffee':
          {
@@ -73,9 +74,11 @@ app.post('/command', (request, response) => {
             console.log("Unidentified command:", command);
             response.send("Could not understand command", command);
       }
-   }).catch(err => {
-      console.log("ERROR: ", err);
-   })
+   // }).catch(err => {
+   //    console.log("ERROR: ", err);
+   // })
+//});
+   response.send("Done");
 });
 
 app.listen(port, (err) => {
