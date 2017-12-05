@@ -14,18 +14,17 @@ const port = process.env.PORT || 3001;
 app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
-app.get('/command', (request, response) => {
+app.post('/command', (request, response) => {
 
-   //const getParse = parser.parse(request.body);
+   const getParse = parser.parse(request.body);
 
-   //getParse.then(function (result){
+   getParse.then(function (result){
       // Transcript of voice command
-      //const command = result.command;
-      const command = "coffee ";
+      const command = result.command;
 
       // Find first word and assume it is the command
       const firstWord = command.substr(0, command.indexOf(' '));
-      console.log(firstWord);
+
       switch (firstWord) {
          case 'coffee':
          {
@@ -74,10 +73,9 @@ app.get('/command', (request, response) => {
             console.log("Unidentified command:", command);
             response.send("Could not understand command", command);
       }
-   // }).catch(err => {
-   //    console.log("ERROR: ", err);
-   // })
-//});
+   }).catch(err => {
+      console.log("ERROR: ", err);
+   })
    response.send("Done");
 });
 

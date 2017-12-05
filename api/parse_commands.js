@@ -13,7 +13,7 @@ function getAction(command) {
     return result;
 }
 
-exports.parse = function (audio) {
+exports.parse = function (audioData) {
 
 	// Imports the Google Cloud client library
 	const speech = require('@google-cloud/speech');
@@ -35,7 +35,7 @@ exports.parse = function (audio) {
 	// const file = fs.readFileSync(fileName);
 
 	// const audioBytes = audio.toString('base64');
-	const audioBytes = audio;
+	const audioBytes = audioData;
 
 	// The audio file's encoding, sample rate in hertz, and BCP-47 language code
 	const audio = {
