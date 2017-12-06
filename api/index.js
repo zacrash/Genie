@@ -22,7 +22,7 @@ app.use(bodyParser.json())
 app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
-app.get('/command', (request, response) => {
+app.post('/command', (request, response) => {
    const getParse = parser.parse(request.body.command);
    console.log("getParse:", getParse);
 
