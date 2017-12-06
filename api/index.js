@@ -24,18 +24,18 @@ app.get('/', (request, response) => {
 });
 app.post('/command', (request, response) => {
    const getParse = parser.parse(request.body.command);
-   console.log("getParse:", getParse);
+   //console.log("getParse:", getParse);
 
-   // getParse.then(function (result){
+   getParse.then(function (result){
       // Transcript of voice command
-      //const command = result.text;
-      //console.log("Command:", command);
-      const command = "Coffee please";
+      const command = result.text;
+      console.log("Command:", command);
+
       // Find first word and assume it is the command
       const firstWord = command.substr(0, command.indexOf(' '));
 
       switch (firstWord) {
-         case 'Coffee':
+         case 'coffee':
          {
             // Start coffee maker
             coffeeController.getCoffee(1);
@@ -44,11 +44,13 @@ app.post('/command', (request, response) => {
             // setInterval(() => {
             //    coffeeController.getCoffee(0)
             // }, 2000);
-
+            response.send("Poured!");
             break;
          }
-         case 'Lights':
+         case 'lights':
          {
+            coffeeController.hitLights(1);
+            response.send("Lights have been turned off!");
             break;
          }
          case 'Search':
@@ -67,12 +69,12 @@ app.post('/command', (request, response) => {
             break;
          }
          default:
-            console.log("Unidentified command:", command);
-            response.send("Could not understand command", command);
+            console.log("Unidentified command");
+            response.send("Could not understand command");
       }
-   // }).catch(err => {
-   //    console.log("ERROR: ", err);
-   // })
+   }).catch(err => {
+      console.log("ERROR: ", err);
+   })
 });
 
 app.listen(port, (err) => {

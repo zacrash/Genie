@@ -23,7 +23,7 @@ exports.parse = function (audioData) {
 	const projectId = 'rugged-sunbeam-185822';
 
 	// set environment variable
-	process.env['GOOGLE_APPLICATION_CREDENTIALS'] = "private/googleSpeechCredentials.json";
+	process.env['GOOGLE_APPLICATION_CREDENTIALS'] = "api/private/googleSpeechCredentials.json";
 
 	// Creates a client
 	const client = new speech.SpeechClient({ });
@@ -38,7 +38,7 @@ exports.parse = function (audioData) {
 
    // Delete newline characters
    audioBytes = bytes.replace(/\n/g, '');
-   
+
 	// The audio file's encoding, sample rate in hertz, and BCP-47 language code
 	const audio = {
 	  content: audioBytes,
