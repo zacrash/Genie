@@ -23,6 +23,7 @@ app.get('/', (request, response) => {
   response.send('Welcome to Genie');
 });
 app.post('/command', (request, response) => {
+   // Parse incoming command
    const getParse = parser.parse(request.body.command);
    //console.log("getParse:", getParse);
 
@@ -53,6 +54,7 @@ app.post('/command', (request, response) => {
             response.send("Lights have been turned off!");
             break;
          }
+         // Needs capital S for some reason...
          case 'Search':
          {
             // Grab remainder of command
@@ -65,7 +67,6 @@ app.post('/command', (request, response) => {
             }).catch(err => {
                console.log("ERROR: ", err);
             })
-
             break;
          }
          default:
